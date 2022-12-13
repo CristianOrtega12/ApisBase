@@ -1,4 +1,5 @@
 ﻿using Application.Common.Response;
+using Application.Cqrs.User.Queries;
 using Application.DTOs.User;
 using Application.Interfaces.User;
 using AutoMapper;
@@ -10,10 +11,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Services.User
 {
+
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -23,13 +26,7 @@ namespace Application.Services.User
 
         private Guid? CreatedBy = null;
         private Guid? UpdatedBy = null;
-        public UserService(
-            ICurrentUserService currentUser,
-            IUnitOfWork unitOfWork,
-            IMapper autoMapper,
-            ILogger<UserService> logger
-
-            )
+        public UserService(ICurrentUserService currentUser, IUnitOfWork unitOfWork, IMapper autoMapper, ILogger<UserService> logger)
         {
             _unitOfWork = unitOfWork;
             _currentUser = currentUser;
@@ -40,6 +37,25 @@ namespace Application.Services.User
 
 
         }
+
+        public async Task<ApiResponse<List<UserDto>>> GetUsers(GetUsersQuery request, CancellationToken cancellationToken)
+        {
+            var response = new ApiResponse<List<UserDto>>();
+            try
+            {
+                response.Data = _autoMapper.Map<List<UserDto>>(await _unitOfWork.UserRepository.Get()
+                                                                                                   .Where(x => x.Status == request.Status)
+                                                                                                   .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Message = $"Error al actualizar el registro, consulte con el administrador. { ex.Message } ";
+                throw;
+            }
+            return response;
+        }
+
         public async Task<ApiResponse<List<UserDto>>> GetUser(int without)
         {
             var response = new ApiResponse<List<UserDto>>();
