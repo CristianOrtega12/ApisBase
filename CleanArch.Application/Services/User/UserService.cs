@@ -1,4 +1,5 @@
 ﻿using Application.Common.Response;
+using Application.Cqrs.User.Commands;
 using Application.Cqrs.User.Queries;
 using Application.DTOs.User;
 using Application.Interfaces.User;
@@ -81,27 +82,21 @@ namespace Application.Services.User
         }
 
         
-        public async Task<ApiResponse<UserDto>> PostUser(Domain.Models.User.User user)
+        public async Task<ApiResponse<UserDto>> PostUser(PostUserCommand request)
         {
+            
             var response = new ApiResponse<UserDto>();
-
             try
             {
-                user.CreatedBy = CreatedBy;
-          
-                response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Add(user));
-                response.Result = true;
-                response.Message = "OK";
+                response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Add(_autoMapper.Map<Domain.Models.User.User>(request.user)));
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al crear el registro, UserService en el método PostUser, { ex.Message } ");             
                 response.Result = false;
                 response.Message = $"Error al actualizar el registro, consulte con el administrador. { ex.Message } ";
+                throw;
             }
-
             return response;
-
 
         }
     }

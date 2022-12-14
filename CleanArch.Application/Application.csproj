@@ -50,8 +50,6 @@
   <ItemGroup>
     <Folder Include="Cqrs\Campaign\Commands\" />
     <Folder Include="Cqrs\Rol\" />
-    <Folder Include="Cqrs\User\Commands\" />
-    <Folder Include="Cqrs\User\Commands\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Response;
+using Application.Cqrs.User.Commands;
 using Application.Cqrs.User.Queries;
 using Application.DTOs.User;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Application.Interfaces.User
 {
     public interface IUserService
     {
-        Task<ApiResponse<UserDto>> PostUser(Domain.Models.User.User user);
+        Task<ApiResponse<UserDto>> PostUser(PostUserCommand request);
         Task<ApiResponse<List<UserDto>>> GetUsers(GetUsersQuery request, CancellationToken cancellationToken);
     }
 }

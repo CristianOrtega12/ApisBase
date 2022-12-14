@@ -13,6 +13,18 @@ namespace ClaroFidelizacion.Api.Controllers
     public class UsersController : ApiControllerBase
     {
         /// <summary>
+        /// Método que crea usuario.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> PostUser([FromBody] PostUserCommand command)
+        {
+
+            return Ok(await Mediator.Send(command));
+        }
+
+        /// <summary>
         /// Obtain all user
         /// </summary>
         /// <param name="query"></param>
