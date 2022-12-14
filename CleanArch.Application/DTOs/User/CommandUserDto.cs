@@ -6,7 +6,6 @@ namespace Application.DTOs.User
 {
     public class CommandUserDto
     {
-        public Guid Id { get; set; }
         public string Document { get; set; }
         public string Names { get; set; }
         public string Phone1 { get; set; }

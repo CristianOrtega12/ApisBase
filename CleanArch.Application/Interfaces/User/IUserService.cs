@@ -10,7 +10,7 @@ namespace Application.Interfaces.User
 {
     public interface IUserService
     {
-        Task<ApiResponse<UserDto>> PostUser(PostUserCommand request);
+        Task<ApiResponse<UserDto>> PostUser(PostUserCommand request, CancellationToken cancellationToken);
         Task<ApiResponse<List<UserDto>>> GetUsers(GetUsersQuery request, CancellationToken cancellationToken);
     }
 }

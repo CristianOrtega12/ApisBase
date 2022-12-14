@@ -82,13 +82,13 @@ namespace Application.Services.User
         }
 
         
-        public async Task<ApiResponse<UserDto>> PostUser(PostUserCommand request)
+        public async Task<ApiResponse<UserDto>> PostUser(PostUserCommand request, CancellationToken cancellationToken)
         {
             
             var response = new ApiResponse<UserDto>();
             try
             {
-                response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Add(_autoMapper.Map<Domain.Models.User.User>(request.user)));
+                response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Add(_autoMapper.Map<Domain.Models.User.User>(request.User)));
             }
             catch (Exception ex)
             {
@@ -99,5 +99,6 @@ namespace Application.Services.User
             return response;
 
         }
+
     }
 }

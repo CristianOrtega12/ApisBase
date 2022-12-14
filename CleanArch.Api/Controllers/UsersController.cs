@@ -1,4 +1,5 @@
-﻿using Application.Cqrs.User.Queries;
+﻿using Application.Cqrs.User.Commands;
+using Application.Cqrs.User.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

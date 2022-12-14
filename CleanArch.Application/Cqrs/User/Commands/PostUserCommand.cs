@@ -15,13 +15,15 @@ namespace Application.Cqrs.User.Commands
 {
     public class PostUserCommand : IRequest<ApiResponse<UserDto>>
     {
-        public CommandUserDto user;
+        //Objeto o parametros que se mostraran en view y se recibiran
+        public CommandUserDto User { get; set; }
     }
 
 
     public class PostUserCommandHandler : IRequestHandler<PostUserCommand, ApiResponse<UserDto>>
     {
-        private IUserService _userService;
+        // Se hace una instancia de la interfaz
+        private readonly IUserService _userService;
 
         public PostUserCommandHandler(IUserService userService)
         {
@@ -30,7 +32,8 @@ namespace Application.Cqrs.User.Commands
 
         public async Task<ApiResponse<UserDto>> Handle(PostUserCommand request, CancellationToken cancellationToken)
         {
-            return await _userService.PostUser(request);
+            //la interfaz accede al Metodo
+            return await _userService.PostUser(request, cancellationToken);
         }
     }
 }
