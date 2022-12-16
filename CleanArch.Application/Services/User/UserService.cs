@@ -57,29 +57,21 @@ namespace Application.Services.User
             return response;
         }
 
-        public async Task<ApiResponse<List<UserDto>>> GetUser(int without)
+        public async Task<ApiResponse<UserDto>> GetUserById(GetUsersByIdQuery request, CancellationToken cancellationToken)
         {
-            var response = new ApiResponse<List<UserDto>>();
-
-            try
-            {
-                var source = _unitOfWork.UserRepository.Get();
- 
-                response.Data = without == 1 ?  await source.ProjectTo<UserDto>(_autoMapper.ConfigurationProvider).ToListAsync()
-                                              : await source.Where(x => x.Status).ProjectTo<UserDto>(_autoMapper.ConfigurationProvider).ToListAsync();
-
-                response.Message = "OK";
-                response.Result = true;                
+            var response = new ApiResponse<UserDto>();
+                try
+                {
+                    response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.GetById(request.Id));
+                }
+                catch (Exception ex)
+                {
+                    response.Result = false;
+                    response.Message = $"Error al actualizar el obtener usuario por ID, consulte con el administrador. { ex.Message } ";
+                    throw;
+                }
+                return response;
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error al cargar los registros, UserService en el método GetUser, { ex.Message } ");
-                response.Result = false;
-                response.Message = $"Error al actualizar el registro, consulte con el administrador. { ex.Message } ";
-            }
-
-            return response;
-        }
 
         
         public async Task<ApiResponse<UserDto>> PostUser(PostUserCommand request, CancellationToken cancellationToken)
@@ -89,6 +81,42 @@ namespace Application.Services.User
             try
             {
                 response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Add(_autoMapper.Map<Domain.Models.User.User>(request.User)));
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Message = $"Error al actualizar el registro, consulte con el administrador. { ex.Message } ";
+                throw;
+            }
+            return response;
+
+        }
+
+        public async Task<ApiResponse<UserDto>> PutUser(PutUserCommand request, CancellationToken cancellationToken)
+        {
+
+            var response = new ApiResponse<UserDto>();
+            try
+            {
+                response.Data = _autoMapper.Map<UserDto>(await _unitOfWork.UserRepository.Put(_autoMapper.Map<Domain.Models.User.User>(request.User)));
+            }
+            catch (Exception ex)
+            {
+                response.Result = false;
+                response.Message = $"Error al actualizar el registro, consulte con el administrador. { ex.Message } ";
+                throw;
+            }
+            return response;
+
+        }
+
+        public async Task<ApiResponse<bool>> DeleteUser(DeleteUserCommand request, CancellationToken cancellationToken)
+        {
+
+            var response = new ApiResponse<bool>();
+            try
+            {
+                response.Data = await _unitOfWork.UserRepository.Delete(_autoMapper.Map<Domain.Models.User.User>(request.User));
             }
             catch (Exception ex)
             {

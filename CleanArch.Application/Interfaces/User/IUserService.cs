@@ -12,6 +12,9 @@ namespace Application.Interfaces.User
     {
         Task<ApiResponse<UserDto>> PostUser(PostUserCommand request, CancellationToken cancellationToken);
         Task<ApiResponse<List<UserDto>>> GetUsers(GetUsersQuery request, CancellationToken cancellationToken);
+        Task<ApiResponse<UserDto>> GetUserById(GetUsersByIdQuery request, CancellationToken cancellationToken);
+        Task<ApiResponse<UserDto>> PutUser(PutUserCommand request, CancellationToken cancellationToken);
+        Task<ApiResponse<bool>> DeleteUser(DeleteUserCommand request, CancellationToken cancellationToken);
     }
 }
 

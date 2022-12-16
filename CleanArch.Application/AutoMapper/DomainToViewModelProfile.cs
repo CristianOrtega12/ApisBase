@@ -17,6 +17,8 @@ namespace CleanArch.Application.AutoMapper
         {
             CreateMap<Campaign, CampaignDto>();
             CreateMap<UsersCampaigns, UsersCampaignsDto>();
+            CreateMap<User, PutUserDto>();
+            CreateMap<User, DeleteUserDto>();
             CreateMap<User, UserDto>();
             CreateMap<User, CommandUserDto>();
             CreateMap<UserRol, UserRolDto>();
